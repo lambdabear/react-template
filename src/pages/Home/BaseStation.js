@@ -20,8 +20,9 @@ const deviceCfg = {
 };
 
 function BaseStation() {
-  const [data, setData] = useState({
-    gatewayID: '0', // 基站id
+  const [gateways, setGateways] = useState([{
+    imei: '',
+    gatewayID: '', // 基站id
     rssi: 0, // 信号强度
     battery: 0, // /1000 = 电量
     operator: 0, // 运营商编码
@@ -30,9 +31,9 @@ function BaseStation() {
     temperature: 0.0,
     humidity: 0.0,
     devices: [],
-  });
+  }]);
   useEffect(() => {
-    const ws = new WebSocket('ws://52.83.48.13:8088/ws/');
+    const ws = new WebSocket('ws://161.189.35.235:8088/ws/');
     setInterval(() => {
       if (ws.readyState === WebSocket.OPEN) {
         ws.send('pong');
@@ -41,7 +42,7 @@ function BaseStation() {
     ws.onmessage = (event) => {
       try {
         const msg = JSON.parse(event.data);
-        setData(msg);
+        setGateways(msg);
       } catch (error) {
         console.error('json parse error:', error);
       }
@@ -51,8 +52,10 @@ function BaseStation() {
 
     return () => ws.close();
   }, []);
-  return (
+  return ( 
     <div>
+    {
+    Array.isArray(gateways) && gateways.map(data => {return (<div>
       <Descriptions title="LoRa-NB 网关" bordered>
         <Descriptions.Item label="网关ID">{data.gatewayID.substring(16)}</Descriptions.Item>
         <Descriptions.Item label="信号强度">{data.rssi}</Descriptions.Item>
@@ -77,7 +80,9 @@ function BaseStation() {
           )))
         }
       </Descriptions>
-    </div>
+    </div>)})
+  }
+  </div>
   );
 }
 
