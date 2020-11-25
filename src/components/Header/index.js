@@ -36,7 +36,7 @@ function onClick({ key } = {}, history) {
 }
 
 function BaseHeader(props) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const { content } = props;
   const history = useHistory();
 
@@ -70,8 +70,9 @@ function BaseHeader(props) {
           collapsedWidth={0}
           trigger={null}
           collapsible
-          collapsed={collapsed}
-          onCollapse={() => setCollapsed(!collapsed)}
+          // collapsed={collapsed}
+          // onCollapse={() => setCollapsed(!collapsed)}
+          collapsed={true}
         >
           <Menu defaultSelectedKeys={['home']} onClick={(e) => onClick(e, history)}>
             <Menu.Item key="home">

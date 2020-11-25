@@ -55,9 +55,9 @@ function BaseStation() {
   return ( 
     <div>
     {
-    Array.isArray(gateways) && gateways.map(data => {return (<div>
-      <Descriptions title="LoRa-NB 网关" bordered>
-        <Descriptions.Item label="网关ID">{data.gatewayID.substring(16)}</Descriptions.Item>
+    Array.isArray(gateways) && gateways.map((data, n) => {return (<div>
+      <Descriptions title={`LoRa-NB 超低功耗基站 NO.${n+1}`} bordered>
+        <Descriptions.Item label="基站IMEI">{data.imei}</Descriptions.Item>
         <Descriptions.Item label="信号强度">{data.rssi}</Descriptions.Item>
         <Descriptions.Item label="电压">{`${(data.battery / 1000).toFixed(2)} V`}</Descriptions.Item>
         <Descriptions.Item label="电量">{`${(((data.battery / 1000) - 3.0) / 0.6 * 100).toFixed(0)} %`}</Descriptions.Item>
@@ -75,7 +75,7 @@ function BaseStation() {
         {
           data.devices.map((e, index) => Object.keys(e).map((key) => (
             <Descriptions.Item label={deviceCfg[key](index + 1)}>
-              {key === 'data' ? `${e[key].toFixed(2)} MPa` : (key === 'battery' ? `${e[key]} %` : e[key])}
+              {key === 'data' ? `${e[key][0].toFixed(2)} MPa` : (key === 'battery' ? `${e[key]} %` : e[key])}
             </Descriptions.Item>
           )))
         }
